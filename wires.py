@@ -1,13 +1,10 @@
 import os
 import re
 from openpyxl import load_workbook
-from files_xl import Setup
 
-class Main(Setup):
-    def __init__(self):
-        super().__init__()
+class Main:
+    def __init__(self) -> None:
         self.files=os.listdir('processingFolder')
-        self.wb_file = None
         self.letCode = "A"
         self.letQtd = "B"
         self.letOp = "C"
@@ -16,14 +13,11 @@ class Main(Setup):
         self.final_values = 0
         self.aux_waste_wires = []
 
-    def clear_waste_list(self):
-        self.aux_waste_wires.clear()
-
     # Process all files inside the folder
     def processing_wb(self):
         for book in self.files:
             wb = load_workbook(filename=f'processingFolder/{book}')
-            wb_sheet = wb[self.name_sheet]
+            wb_sheet = wb['Ficha Técnica']
             self.find_extrem_values(wb_sheet)
             self.processing_sheet(wb_sheet)
 
@@ -63,6 +57,13 @@ class Main(Setup):
                     if self.search_values(f'{wb[f"{self.letCode}{+i}"].value}', f'{self.aux_waste_wires[index]}'):
                         break
         wb.save(f'processingFolder/{wb.filename}')
+#########
+#Generic functions
+    def column_search(self, wb):
+        pass
+        """for index in range(self.start_values, self.final_values):
+            if self.search_values(f'{wb[f"{self.letCode}{+i}"].value}', f'{self.aux_waste_wires[index]}'):
+                return True"""
 
 #AUXILIAR FUNCTIONS
 ##############################################################################################################

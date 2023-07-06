@@ -1,13 +1,10 @@
 import os
 import re
 from openpyxl import load_workbook
-from files_xl import Setup
 
-class Main(Setup):
-    def __init__(self):
-        super().__init__()
+class Main:
+    def __init__(self) -> None:
         self.files=os.listdir('processingFolder')
-        self.wb_file = None
         self.letCode = "A"
         self.letQtd = "B"
         self.letOp = "C"
@@ -23,7 +20,7 @@ class Main(Setup):
     def processing_wb(self):
         for book in self.files:
             wb = load_workbook(filename=f'processingFolder/{book}')
-            wb_sheet = wb[self.name_sheet]
+            wb_sheet = wb['Ficha Técnica']
             self.find_extrem_values(wb_sheet)
             self.processing_sheet(wb_sheet)
 
@@ -34,11 +31,11 @@ class Main(Setup):
             if self.search_values(f'#N/D', term) or self.search_values(f'#N/A', term):
                 break
             i += 1
-        self.start_values = i
+        self.start_values,self.final_values = i
 
     # Process the waste of the wires
     def processing_waste(self, wb, i):
-        self.final_values += i
+
         while (wb[f'{self.letCode}{+self.final_values}'].value) != None:
             if self.search_values(f'_D', wb[f'{self.letCode}{+self.final_values}'].value):
                 self.aux_waste_wires.append({wb[f'{self.letCode}{+self.final_values}'].value: f"{self.final_values}"})
@@ -61,8 +58,15 @@ class Main(Setup):
             for item in self.aux_waste_wires:
                 for i in item:
                     if self.search_values(f'{wb[f"{self.letCode}{+i}"].value}', f'{self.aux_waste_wires[index]}'):
-                        break
+                        continue
         wb.save(f'processingFolder/{wb.filename}')
+#########
+#Generic functions
+    def column_search(self, wb):
+        pass
+        """for index in range(self.start_values, self.final_values):
+            if self.search_values(f'{wb[f"{self.letCode}{+i}"].value}', f'{self.aux_waste_wires[index]}'):
+                return True"""
 
 #AUXILIAR FUNCTIONS
 ##############################################################################################################
