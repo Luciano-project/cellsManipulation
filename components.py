@@ -7,7 +7,6 @@ class Component:
         self._operation = operation
         self._waste_quantity = quantity_waste
         self._waste_percent = 0
-        
 
     def __repr__(self):
         return self._component
@@ -25,6 +24,7 @@ class Component:
     def get_waste_quantity(self): return self._waste_quantity
     def get_waste_percent(self): return self._waste_percent
     
+    #
     def setter_quantity(self, quantity):
         self._quantity = quantity
         self.calculate_wire_waste()

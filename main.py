@@ -30,7 +30,7 @@ class Main(Setup):
         i = 1
         while True:
             term = f"{wb[f'{self.letOp}{+i}'].value}"
-            if self.search_values(f'#N/D', term) or self.search_values(f'#N/A', term):
+            if (self.search_values(f'#N/D', term) or self.search_values(f'#N/A', term)) and i > 7:
                 break
             i += 1
         self.start_values += i
